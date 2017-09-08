@@ -1,7 +1,18 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2017 mark.knapp
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package shooter;
 
@@ -21,9 +32,9 @@ import javafx.util.Duration;
  * @author Mark Knapp
  */
 public class GreenEnergyGunFlash extends Effect {
-
-    public final static String                  EFFECT1      = "resources/images/GreenEnergyGunFlash1.png";
-    public final static String                  EFFECT2      = "resources/images/GreenEnergyGunFlash2.png";
+    
+    public final static String[]                EFFECT_FILES = {"resources/images/GreenEnergyGunFlash1.png", 
+                                                                "resources/images/GreenEnergyGunFlash2.png"};
     
     public final static double                  EFFECT_X_SIZE   = 24;
     public final static double                  EFFECT_Y_SIZE   = 24;
@@ -41,16 +52,19 @@ public class GreenEnergyGunFlash extends Effect {
      */ 
     @Override
     public void draw () { 
+        // Load up our image files
         imgEffect = new ArrayList<ImageView>();
-        imgEffect.add(new ImageView(new Image(getClass().getClassLoader().getResource(EFFECT1).toString())));
-        imgEffect.add(new ImageView(new Image(getClass().getClassLoader().getResource(EFFECT2).toString())));
+        for(String file : EFFECT_FILES)
+            imgEffect.add(new ImageView(new Image(getClass().getClassLoader().getResource(file).toString())));
         
+        // Draw, move and size the initial frame
         this.getChildren().add(imgEffect.get(0));
         this.setTranslateX(xLoc);
         this.setTranslateY(yLoc);
         this.setScaleX(xSize/EFFECT_X_SIZE);
         this.setScaleY(ySize/EFFECT_Y_SIZE);
         
+        // Animate it
         EventHandler<ActionEvent> explosionEventHandler = e -> {
             if (imgIndex > 1) {
                 effectDone();
@@ -58,7 +72,6 @@ public class GreenEnergyGunFlash extends Effect {
                 this.getChildren().setAll(imgEffect.get(imgIndex++));
             }
         };
-            
         effectAnimation = new Timeline(new KeyFrame(Duration.millis(20), explosionEventHandler));
         effectAnimation.setCycleCount(6);
         effectAnimation.play();

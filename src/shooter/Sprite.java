@@ -1,7 +1,18 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2017 mark.knapp
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package shooter;
 
@@ -9,6 +20,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.transform.Rotate;
 
 /**
  * Generic sprite object to be used as the base for all other moving objects
@@ -110,6 +122,9 @@ abstract class Sprite extends Group {
 
     /**
      * Calculate XY coordinates assuming we are given x,y for top-left.
+     *
+     * @param   x    The X coordinate of the left location
+     * @param   y    The Y coordinate of the top location
      */  
     public void setXYBasedOnTopLeft (double x, double y) { 
         xTopLeftLoc = x;
@@ -122,6 +137,9 @@ abstract class Sprite extends Group {
 
     /**
      * Calculate XY coordinates assuming we are given x,y for bottom-center.
+     *
+     * @param   x    The X coordinate of the center location
+     * @param   y    The Y coordinate of the bottom location
      */  
     public void setXYBasedOnBottomCenter (double x, double y) { 
         xBottomCenterLoc = x;
@@ -282,8 +300,18 @@ abstract class Sprite extends Group {
         return(paused);
     } 
     
-    // We need to make a custom timer since we need to add some vars to mess with
-    // the pause/unpause feature
+    /**
+     * Rotate the sprite based on the "angle" global var.
+     */
+    public void rotate () { 
+        this.getTransforms().add(new Rotate(angle, xBottomCenterLoc, yBottomCenterLoc));
+    }     
+        
+    /**
+     * Move the sprite along it's path.
+     * We need to make a custom timer class since we need to add some 
+     * vars to mess with the pause/unpause feature
+     */
     public class MyTimer extends AnimationTimer {
 
         private long    timealive   = 0;

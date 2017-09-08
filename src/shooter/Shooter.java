@@ -1,7 +1,18 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2017 mark.knapp
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package shooter;
 
@@ -22,7 +33,8 @@ import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 
 /**
- *
+ * Main class for a simple space-invaders-style shooting game.
+ * I wrote it just to explore JavaFX.
  * @author Mark Knapp
  */
 public class Shooter extends Application {   
@@ -53,14 +65,9 @@ public class Shooter extends Application {
     protected       double              spawnRateProgression    = 0.995; 
 
     // The percentage chance of a specific type of enemy spawning
-    protected       double              enemyBatChance          = 30;
-    protected       double              enemyChopperChance      = 30;
-    protected       double              enemyBeeChance          = 100 - enemyBatChance - enemyChopperChance;
-    
-    // The buffer on the sides of the screen for the enemies start. 
-    protected       double              enemyBatXBuffer          = 150;
-    protected       double              enemyChopperXBuffer      = 80;
-    protected       double              enemyBeeXBuffer          = 80;
+    protected       double              enemyJetChance          = 30;
+    protected       double              enemyDoomBallChance     = 30;
+    protected       double              enemyBladeChance          = 100 - enemyJetChance - enemyDoomBallChance;
     
     // The max angle deviation from straight down
     protected       int                 enemyMaxAngle            = 15;
@@ -142,9 +149,6 @@ public class Shooter extends Application {
      * Resets game.
      * Basically create everything new. The Java GC will take care of the old
      * after we disconnect it.
-     * 
-     * NOTE: Currently disabled since it causes crashes. Just using it as init
-     * for the moment
      */   
     public void reset() {
         setPause(true);
@@ -331,19 +335,19 @@ public class Shooter extends Application {
                     currentSpawnRate *= spawnRateProgression;
                     
                     // Pre-calc some coords
-                    double  xBatStart       = (double)(diceRoller.nextInt((int) (screenX - (enemyBatXBuffer * 2))) + enemyBatXBuffer);
-                    double  xChopperStart   = (double)(diceRoller.nextInt((int) (screenX - (enemyChopperXBuffer * 2))) + enemyChopperXBuffer);
-                    double  xBeeStart       = (double)(diceRoller.nextInt((int) (screenX - (enemyBeeXBuffer * 2))) + enemyBeeXBuffer);
+                    double  xJetStart       = (double)(diceRoller.nextInt((int) (screenX - (EnemyJet.SIDE_BUFFER * 2))) + EnemyJet.SIDE_BUFFER);
+                    double  xDoomBallStart  = (double)(diceRoller.nextInt((int) (screenX - (EnemyDoomBall.SIDE_BUFFER * 2))) + EnemyDoomBall.SIDE_BUFFER);
+                    double  xBladeStart       = (double)(diceRoller.nextInt((int) (screenX - (EnemyBlade.SIDE_BUFFER * 2))) + EnemyBlade.SIDE_BUFFER);
                     int     xAngleStart     = diceRoller.nextInt(enemyMaxAngle * 2) + 180 - enemyMaxAngle;
                     
                     // Randomize which enemies we get
                     randomNumber = diceRoller.nextInt(100);
-                    if (randomNumber >= (100 - enemyBatChance)) {
-                        enemyList.add(new EnemyBat(enemies, xBatStart, -30, xAngleStart));
-                    } else if (randomNumber >= (100 - enemyBatChance - enemyChopperChance)) {    
-                        enemyList.add(new EnemyChopper(enemies, xChopperStart, -25, xAngleStart));
+                    if (randomNumber >= (100 - enemyJetChance)) {
+                        enemyList.add(new EnemyJet(enemies, xJetStart, -30, xAngleStart));
+                    } else if (randomNumber >= (100 - enemyJetChance - enemyDoomBallChance)) {    
+                        enemyList.add(new EnemyDoomBall(enemies, xDoomBallStart, -25, xAngleStart));
                     } else {
-                        enemyList.add(new EnemyBee(enemies, xBeeStart, -45, xAngleStart));
+                        enemyList.add(new EnemyBlade(enemies, xBladeStart, -45, xAngleStart));
                     }
                     lastSpawn = timestamp;
                 }

@@ -1,7 +1,18 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2017 mark.knapp
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package shooter;
 
@@ -22,14 +33,14 @@ import javafx.util.Duration;
  */
 public class Explosion extends Effect {
 
-    public final static String                  EFFECT1      = "resources/images/explosion1.png";
-    public final static String                  EFFECT2      = "resources/images/explosion2.png";
-    public final static String                  EFFECT3      = "resources/images/explosion3.png";
-    public final static String                  EFFECT4      = "resources/images/explosion4.png";
-    public final static String                  EFFECT5      = "resources/images/explosion5.png";
-    public final static String                  EFFECT6      = "resources/images/explosion6.png";
-    public final static String                  EFFECT7      = "resources/images/explosion7.png";
-    public final static String                  EFFECT8      = "resources/images/explosion8.png";
+    public final static String[]                EFFECT_FILES = {"resources/images/explosion1.png", 
+                                                                "resources/images/explosion2.png", 
+                                                                "resources/images/explosion3.png", 
+                                                                "resources/images/explosion4.png", 
+                                                                "resources/images/explosion5.png", 
+                                                                "resources/images/explosion6.png",
+                                                                "resources/images/explosion7.png",
+                                                                "resources/images/explosion8.png"};
     
     public final static double                  EFFECT_X_SIZE   = 32;
     public final static double                  EFFECT_Y_SIZE   = 32;
@@ -37,8 +48,8 @@ public class Explosion extends Effect {
     protected           ArrayList<ImageView>    imgEffect;
     
     //Sound Effects
-    protected           AudioClip   soundEffect;
-    public final static String      SOUND_EFFECT_FILE   = "resources/audio/Explosion.mp3";
+    protected           AudioClip               soundEffect;
+    public final static String                  SOUND_EFFECT_FILE   = "resources/audio/Explosion.mp3";
  
      
     public Explosion (Group gRoot, double xTopLeftStart, double yTopLeftStart, double xESize, double yESize) { 
@@ -54,34 +65,31 @@ public class Explosion extends Effect {
      */ 
     @Override
     public void draw () { 
+        // Load up our image files
         imgEffect = new ArrayList<ImageView>();
-        imgEffect.add(new ImageView(new Image(getClass().getClassLoader().getResource(EFFECT1).toString())));
-        imgEffect.add(new ImageView(new Image(getClass().getClassLoader().getResource(EFFECT2).toString())));
-        imgEffect.add(new ImageView(new Image(getClass().getClassLoader().getResource(EFFECT3).toString())));
-        imgEffect.add(new ImageView(new Image(getClass().getClassLoader().getResource(EFFECT4).toString())));
-        imgEffect.add(new ImageView(new Image(getClass().getClassLoader().getResource(EFFECT5).toString())));
-        imgEffect.add(new ImageView(new Image(getClass().getClassLoader().getResource(EFFECT6).toString())));
-        imgEffect.add(new ImageView(new Image(getClass().getClassLoader().getResource(EFFECT7).toString())));
-        imgEffect.add(new ImageView(new Image(getClass().getClassLoader().getResource(EFFECT8).toString())));
+        for(String file : EFFECT_FILES)
+            imgEffect.add(new ImageView(new Image(getClass().getClassLoader().getResource(file).toString())));
         
+        // Draw, move and size the initial frame
         this.getChildren().add(imgEffect.get(0));
         this.setTranslateX(xLoc);
         this.setTranslateY(yLoc);
         this.setScaleX(xSize/EFFECT_X_SIZE);
         this.setScaleY(ySize/EFFECT_Y_SIZE);
         
+        // Animate it
         EventHandler<ActionEvent> effectEventHandler = e -> {
             if (imgIndex > 7) {
                 effectDone();
             } else {
                 this.getChildren().setAll(imgEffect.get(imgIndex++));
             }
-        };
-            
+        };    
         effectAnimation = new Timeline(new KeyFrame(Duration.millis(50), effectEventHandler));
         effectAnimation.setCycleCount(9);
         effectAnimation.play();
         
+        // KAPOW! Sound effects
         soundEffect = new AudioClip(getClass().getClassLoader().getResource(SOUND_EFFECT_FILE).toString());
         soundEffect.play();
     }  
