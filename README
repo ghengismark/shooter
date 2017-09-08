@@ -1,5 +1,9 @@
 Author: Mark Knapp
 
+Requires Java 8 to run!
+
+Running dist/Shooter.jar should be all you need.
+
 This is a simple space-invaders style game I wrote to explore JavaFX.
-All images are free/public license.
+All images and audio are free/public domain/public license.
 

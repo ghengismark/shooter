@@ -26,12 +26,18 @@ import javafx.scene.paint.Color;
 public class EnemySimpleSidewinder extends Enemy {
     
     // How wide (distance) the sidewinder swings back and forth
-    protected   double  swingDistance = 4;
+    protected   double  swingDistance   = 4;
     
     // How fast (speed) the sidewinder swings back and forth
-    protected   double  swingSpeed = 4;
+    protected   double  swingSpeed      = 4;
     
-    private     int     moveCycle=0;
+    private     int     moveCycle       = 0;
+    
+    protected   double  xCycleVel       = 0;
+    // Used to select the image based on the side movement
+    // 0 = center, 1 = move left, 2 = move right
+    protected   int     sideImage       = 0;
+    
    
     public EnemySimpleSidewinder(Group gRoot, double xTopLeftStart, double yTopLeftStart, int angle) {
         super(gRoot, xTopLeftStart, yTopLeftStart, angle);
@@ -56,7 +62,15 @@ public class EnemySimpleSidewinder extends Enemy {
         moveCycle += swingSpeed;
         if (moveCycle > 360)
                 moveCycle = 0;
-        double xCycleVel = Math.cos(Math.toRadians(moveCycle)) * swingDistance;
+        
+        xCycleVel = Math.cos(Math.toRadians(moveCycle)) * swingDistance;
+        if ((xCycleVel/swingDistance) > 0.3)
+            sideImage = 2;
+        else if ((xCycleVel/swingDistance) < -0.3)
+            sideImage = 1;
+        else
+            sideImage = 0;
+                
         moveTo(xTopLeftLoc+xVel+xCycleVel, yTopLeftLoc+yVel);
     }    
         

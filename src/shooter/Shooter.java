@@ -35,6 +35,7 @@ import javafx.stage.Stage;
 /**
  * Main class for a simple space-invaders-style shooting game.
  * I wrote it just to explore JavaFX.
+ * All images and audio are free/public domain/public license.
  * @author Mark Knapp
  */
 public class Shooter extends Application {   
@@ -53,7 +54,7 @@ public class Shooter extends Application {
 
     //Background Music
     protected           AudioClip       backgroundMusic;
-    public final static String          BACKGROUND_MUSIC_FILE   = "resources/audio/BackgroundMusic.mp3";
+    public final static String          BACKGROUND_MUSIC_FILE   = "resources/audio/BackgroundMusic2.mp3";
 
     // The starting enemy spawn rate. The number of seconds delay between spawns.
     protected       double              startingSpawnRate       = 1;
@@ -134,8 +135,8 @@ public class Shooter extends Application {
         root.getChildren().add(text.createScore(screenX-200,20));
         
         backgroundMusic = new AudioClip(getClass().getClassLoader().getResource(BACKGROUND_MUSIC_FILE).toString());
+        backgroundMusic.setVolume(2);
         backgroundMusic.play();
-        
         
         setupKeyPresses(scene);
         handleKeyPress(gun);

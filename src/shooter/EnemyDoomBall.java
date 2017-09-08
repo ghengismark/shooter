@@ -63,7 +63,7 @@ public class EnemyDoomBall extends EnemySimpleStopper {
      */
     @Override
     public void init () { 
-        radius = 25;
+        radius = 35;
         xSize = ySize = radius*2;
         timeToLive = 30;
     }

@@ -45,7 +45,6 @@ public class EnemyJet extends EnemySimpleSidewinder {
     protected           ArrayList<ImageView>    imgEnemy;
     protected           Group                   enemy;   
     protected           Timeline                enemyAnimation;
-    private             int                     imgIndex            = 0;
    
     public EnemyJet(Group gRoot, double xTopLeftStart, double yTopLeftStart, int angle) {
         super(gRoot, xTopLeftStart, yTopLeftStart, angle);
@@ -81,9 +80,7 @@ public class EnemyJet extends EnemySimpleSidewinder {
         this.getChildren().add(enemy);
         
         EventHandler<ActionEvent> batEventHandler = e -> {
-            if (imgIndex > 5) 
-                imgIndex = 0;
-            enemy.getChildren().setAll(imgEnemy.get(imgIndex++));
+            enemy.getChildren().setAll(imgEnemy.get(sideImage));
         };  
         enemyAnimation = new Timeline(new KeyFrame(Duration.millis(100), batEventHandler));
         enemyAnimation.setCycleCount(Timeline.INDEFINITE);
