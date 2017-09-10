@@ -1,6 +1,8 @@
 # Shooter
 A JavaFX game in the flavor of space invaders / missile command.
+
 *GNU 3 license*
+
 *All images and audio are free/public domain/public license.*
 
 # Requirements
