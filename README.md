@@ -1,9 +1,11 @@
 # Shooter
-A JavaFX game in the flavor of space invaders / missile command.
+* **A JavaFX game in the flavor of space invaders / missile command.**
+* GNU 3 license.
+* All images and audio are free/public domain/public license.
 
-*GNU 3 license*
-
-*All images and audio are free/public domain/public license.*
+# Links
+* [JAR file to play](dist/Shooter.jar)
+* [Source](src/shooter)
 
 # Requirements
 * Requires Java 8 installed on your system to run. 
